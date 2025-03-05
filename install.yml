@@ -1,5 +1,6 @@
 ---
-- hosts: drbd 
+- hosts: drbd_group
+  become: true
   vars:
     etc_hosts_add_all_hosts: true
     pri_domain_name: friti.box 

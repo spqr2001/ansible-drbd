@@ -12,3 +12,12 @@
     state: present
   become: true
   when: drbd_use_heartbeat
+
+- name: Check if a reboot is required
+  register: file
+  stat: path=/var/run/reboot-required get_checksum=no
+
+- name: wait for getting windowsed 
+  ansible.builtin.reboot:
+    reboot_timeout: 3600
+  when: file.stat.exists == true 
