@@ -29,7 +29,7 @@ drbd_network_shared_secret: wXE8MqVa
 drbd_vip: 192.168.250.100
 
 # Debian9/Ubuntu have included drbd support.
-drbd_deb_packages: ['drbd8-utils']
+drbd_deb_packages: ['drbd-utils']
 # Additional yum repo required. See ELREPO for prebuilt RHEL RPMS, or your local site administrator.
 drbd_rpm_packages: ['drbd84-utils', 'kmod-drbd84']
 

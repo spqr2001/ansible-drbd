@@ -6,11 +6,6 @@
     - drbd
   when: ansible_os_family == "Debian"
 
-- include_tasks: redhat.yml
-  tags:
-    - drbd
-  when: ansible_os_family == "RedHat"
-
 - include_tasks: disks.yml
   tags:
     - drbd

@@ -7,7 +7,7 @@
 - name: heartbeat | Creating Heartbeat Authkey On Master
   shell: dd if=/dev/urandom count=4 2>/dev/null | openssl dgst -sha1 | awk '{ print $2 }'
   register: _drbd_heartbeat_authkey
-  no_log: true
+    #no_log: true
   when: >
         not _drbd_heartbeat_authkey_check['stat']['exists'] and
         inventory_hostname == groups[drbd_group][0]
@@ -15,7 +15,7 @@
 - name: heartbeat | Setting Heartbeat Authkey On Master
   set_fact:
     drbd_heartbeat_authkey: "{{ _drbd_heartbeat_authkey['stdout'] }}"
-  no_log: true
+      #no_log: true
   when: >
         not _drbd_heartbeat_authkey_check['stat']['exists'] and
         inventory_hostname == groups[drbd_group][0]
@@ -23,7 +23,7 @@
 - name: heartbeat | Setting Heartbeat Authkey On Master
   set_fact:
     drbd_heartbeat_authkey: "{{ hostvars[groups[drbd_group][0]]['drbd_heartbeat_authkey'] }}"
-  no_log: true
+      #no_log: true
   when: >
         not _drbd_heartbeat_authkey_check['stat']['exists'] and
         inventory_hostname != groups[drbd_group][0]

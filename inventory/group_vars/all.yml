@@ -1,5 +1,4 @@
 ---
----
 # defaults file for ansible-drbd
 
 drbd_common:
@@ -13,19 +12,30 @@ drbd_common:
 
 drbd_disks:
   - device: /dev/drbd0
-    disk: /dev/sdb
+    disk: /dev/sdb 
     filesystem: ext4
     partitions: 1
     mountpoint: /opt/nfs
+    mountopts: defaults
     resource: r0
     state: present
     use_partition: /dev/sdb1
 
-drbd_group: test_nodes
+drbd_group: drbd
 
-drbd_interface: enp0s8
+drbd_interface: eth0
 
 drbd_network_shared_secret: wXE8MqVa
 
-drbd_vip: 192.168.250.100
+drbd_vip: 192.168.178.245
+
+drbd_use_heartbeat: false
+drbd_use_parted: true
+
+
+drbd_deb_packages: ['drbd-utils','linux-modules-extra-{{ ansible_kernel }}']
+
+# Toggle
+drbd_unicast_mode: false
+drbd_unicast_port: 694
 
