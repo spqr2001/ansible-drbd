@@ -1,0 +1,9 @@
+---
+- hosts: drbd 
+  vars:
+    etc_hosts_add_all_hosts: true
+    pri_domain_name: friti.box 
+  roles:
+    - role: ansible-ntp
+    - role: ansible-etc-hosts
+    - role: drbd
