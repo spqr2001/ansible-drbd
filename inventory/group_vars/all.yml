@@ -2,8 +2,7 @@
 lvm_volume_groups:
   - name: nfs_ng 
     pvs:
-      - /dev/sdb
-      - /dev/sdc
+      - {{ lvm_disks }}
 
 lvm_logical_volumes:
   - name: ha_nfs_internal_lv 
@@ -23,6 +22,10 @@ drbd_common:
   handlers: ''
   startup: ''
   options: ''
+
+lvm_disks: 
+  - /dev/sdb
+  - /dev/sdc 
 
 drbd_disks:
   - device: /dev/drbd0
@@ -44,7 +47,7 @@ drbd_network_shared_secret: wXE8MqVa
 drbd_vip: 192.168.178.245
 
 drbd_use_heartbeat: false
-drbd_use_parted: true
+  #drbd_use_parted: true
 
 
 drbd_deb_packages: ['drbd-utils','linux-modules-extra-{{ ansible_kernel }}']

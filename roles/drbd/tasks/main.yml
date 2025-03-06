@@ -6,11 +6,6 @@
     - drbd
   when: ansible_os_family == "Debian"
 
-- include_tasks: disks.yml
-  tags:
-    - drbd
-    - drbd-config
-    - drbd-disks
 
 - include_tasks: heartbeat.yml
   tags:
