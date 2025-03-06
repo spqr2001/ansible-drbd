@@ -1,5 +1,19 @@
 ---
-# defaults file for ansible-drbd
+lvm_volume_groups:
+  - name: nfs_ng 
+    pvs:
+      - /dev/sdb
+      - /dev/sdc
+
+lvm_logical_volumes:
+  - name: ha_nfs_internal_lv 
+    vg: nfs_ng 
+    size: 20 
+      #opts: --type cache-pool
+      #
+  - name: ha_nfs_exports_lv
+    vg: nfs_ng
+    size: 100%FREE 
 
 drbd_common:
   disk: ''

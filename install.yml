@@ -3,8 +3,9 @@
   become: true
   vars:
     etc_hosts_add_all_hosts: true
-    pri_domain_name: friti.box 
+    pri_domain_name: fritz.box 
   roles:
+    - role: robertdebock.lvm
     - role: ansible-ntp
     - role: ansible-etc-hosts
     - role: drbd
