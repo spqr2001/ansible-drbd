@@ -2,7 +2,7 @@
 lvm_volume_groups:
   - name: nfs_ng 
     pvs:
-      - {{ lvm_disks }}
+      - "{{ lvm_disks }}"
 
 lvm_logical_volumes:
   - name: ha_nfs_internal_lv 
@@ -24,19 +24,33 @@ drbd_common:
   options: ''
 
 lvm_disks: 
-  - /dev/sdb
-  - /dev/sdc 
+  - /dev/sdb1
+  - /dev/sdc1
+
+nfs_dirs: 
+  - /srv/drbd-nfs/exports/HA
+  - /srv/drbd-nfs/internal
 
 drbd_disks:
-  - device: /dev/drbd0
-    disk: /dev/sdb 
+  - device: /dev/drbd1002  
+    disk: /dev/nfs_vg/ha_nfs_internal_lv 
     filesystem: ext4
     partitions: 1
-    mountpoint: /opt/nfs
+    mountpoint: /srv/drbd-nfs/internal 
     mountopts: defaults
     resource: r0
     state: present
     use_partition: /dev/sdb1
+  - device: /dev/drbd1003
+    disk: /dev/nfs_vg/ha_nfs_exports_lv 
+    filesystem: ext4
+    partitions: 1
+    mountpoint: /srv/drbd-nfs/exports/HA
+    mountopts: defaults
+    resource: r0
+    state: present
+    use_partition: /dev/sdb1
+
 
 drbd_group: drbd
 

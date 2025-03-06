@@ -1,3 +1,7 @@
 [drbd_group]
 node00
 node02
+[pacemaker]
+node00
+node01
+node02

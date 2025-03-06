@@ -1,26 +1,32 @@
-global { usage-count no; }
-common { syncer { rate 100M; } }
-resource r0 {
-        protocol C;
-        startup {
-                wfc-timeout  15;
-                degr-wfc-timeout 60;
-        }
-        net {
-                cram-hmac-alg sha1;
-                shared-secret "secret";
-        }
-        on "{{ groups['drbd_group'][0] }}" {
-                device /dev/drbd0;
-                disk /dev/sdb1;
-                address "{{ hostvars[groups['drbd_group'][0]]['ansible_eth0']['ipv4']['address'] }}":7788;
-                meta-disk internal;
-        }
-        on "{{ groups['drbd_group'][1] }}" {
-                device /dev/drbd0;
-                disk /dev/sdb1;
-                address "{{ hostvars[groups['drbd_group'][1]]['ansible_eth0']['ipv4']['address'] }}":7788;
-                meta-disk internal;
-        }
-} 
-
+resource ha_nfs {
+  volume 0 {
+    device "/dev/drbd1002";
+    disk "/dev/nfs_vg/ha_nfs_internal_lv";
+    meta-disk internal;
+  }
+  volume 1 {
+    device "/dev/drbd1003";
+    disk "/dev/nfs_vg/ha_nfs_exports_lv";
+    meta-disk internal;
+   }
+  options {
+    on-no-quorum suspend-io;
+    quorum majority;
+  }
+  connection-mesh {
+    hosts "{{ groups['pacemaker'][1] }}" "{{ groups['pacemaker'][2] }}" "{{ groups['pacemaker'][3] }}" ;
+  }
+  on "{{ groups['drbd_group'][0] }}" {
+    address "{{ hostvars[groups['drbd_group'][0]]['ansible_eth0']['ipv4']['address'] }}":7003;
+    node-id 0;
+  }
+  on "{{ groups['drbd_group'][1] }}" {
+    address "{{ hostvars[groups['drbd_group'][1]]['ansible_eth0']['ipv4']['address'] }}":7003;
+    node-id 1;
+  }
+  on "{{ groups['pacemaker'][3] }}" {
+    disk none;
+    address "{{ hostvars[groups['pacemaker'][3]]['ansible_eth0']['ipv4']['address'] }}":7003;
+    node-id 2;
+  }
+}
